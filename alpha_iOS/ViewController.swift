@@ -21,13 +21,22 @@ class ViewController: UIViewController {
             else{
                 return
             }
+            let decoder = JSONDecoder()
 //            print(data)
-            let str = String(data: data, encoding: .utf8)
-            print("Полученные данные: \(str ?? "")")
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            let model = try! decoder.decode([BeerDTO].self, from: data)
+            print(model)
         }).resume()
         // Do any additional setup after loading the view.
     }
 
-
 }
 
+struct BeerDTO: Decodable {
+    let id: Int
+    let name: String
+    let tagline: String
+    let imageUrl: URL
+    
+}
